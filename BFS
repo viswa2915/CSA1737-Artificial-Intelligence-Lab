@@ -1,0 +1,27 @@
+from collections import deque
+
+def bfs(graph, start):
+    q = deque([start])
+    seen = {start}
+    order = []
+    dist = {start: 0}
+    parent = {start: None}
+    while q:
+        u = q.popleft()
+        order.append(u)
+        for v in graph.get(u, []):
+            if v not in seen:
+                seen.add(v)
+                dist[v] = dist[u] + 1
+                parent[v] = u
+                q.append(v)
+    return order, dist, parent
+
+n = int(input("Enter number of nodes: "))
+g = {}
+for _ in range(n):
+    node = input("Enter node: ")
+    neighbors = input(f"Enter neighbors of {node} separated by space: ").split()
+    g[node] = neighbors
+start = input("Enter starting node: ")
+print(bfs(g, start))
