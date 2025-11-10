@@ -1,0 +1,20 @@
+def dfs(graph, start, seen=None, order=None, dist=None, parent=None, depth=0):
+    if seen is None:
+        seen, order, dist, parent = set(), [], {start: 0}, {start: None}
+    seen.add(start)
+    order.append(start)
+    for v in graph.get(start, []):
+        if v not in seen:
+            parent[v] = start
+            dist[v] = depth + 1
+            dfs(graph, v, seen, order, dist, parent, depth + 1)
+    return order, dist, parent
+
+n = int(input("Enter number of nodes: "))
+g = {}
+for _ in range(n):
+    node = input("Enter node: ")
+    neighbors = input(f"Enter neighbors of {node} separated by space: ").split()
+    g[node] = neighbors
+start = input("Enter starting node: ")
+print(dfs(g, start))
