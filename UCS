@@ -1,0 +1,33 @@
+import heapq
+
+def ucs(graph, start, goal):
+    q = [(0, start)]
+    visited = {}
+    parent = {start: None}
+    while q:
+        cost, node = heapq.heappop(q)
+        if node in visited:
+            continue
+        visited[node] = cost
+        if node == goal:
+            break
+        for neigh, w in graph.get(node, []):
+            if neigh not in visited:
+                heapq.heappush(q, (cost + w, neigh))
+                parent[neigh] = node
+    return visited, parent
+
+n = int(input("Enter number of nodes: "))
+g = {}
+for _ in range(n):
+    node = input("Enter node: ")
+    m = int(input(f"Enter number of neighbors for {node}: "))
+    neighbors = []
+    for _ in range(m):
+        neigh, w = input(f"Enter neighbor and cost (e.g. B 2): ").split()
+        neighbors.append((neigh, int(w)))
+    g[node] = neighbors
+
+start = input("Enter starting node: ")
+goal = input("Enter goal node: ")
+print(ucs(g, start, goal))
